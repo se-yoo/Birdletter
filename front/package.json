@@ -1,0 +1,26 @@
+{
+  "name": "nodebird-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "seyoo",
+  "license": "ISC",
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.7.0",
+    "next": "^9.5.5",
+    "prop-types": "^15.8.1",
+    "styled-components": "^6.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.45.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}
