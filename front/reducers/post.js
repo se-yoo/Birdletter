@@ -7,7 +7,7 @@ export const initialState = {
         id: 1,
         nickname: "홍길동",
       },
-      content: "첫번째 게시글",
+      content: "첫번째 게시글 #고양이 #집사",
       Images: [
         {
           src: "https://storage.blip.kr/collection/295867b72822b70e15434e651ca5557d.jpg",
