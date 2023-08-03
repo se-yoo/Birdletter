@@ -1,12 +1,13 @@
-import React, { useState, useCallback } from "react";
-import Head from "next/head";
-import { Button, Checkbox, Form, Input } from "antd";
-import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useCallback, useEffect } from 'react';
+import Head from 'next/head';
+import { Button, Checkbox, Form, Input } from 'antd';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
 
-import AppLayout from "../components/AppLayout";
-import useInput from "../hooks/useInput";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import AppLayout from '../components/AppLayout';
+import useInput from '../hooks/useInput';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -14,13 +15,27 @@ const ErrorMessage = styled.div`
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector(
+    (state) => state.user,
+  );
 
-  const [email, onChangeEmail] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
-  const [password, onChangePassword] = useInput("");
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
 
-  const [passwordCheck, setPasswordCheck] = useState("");
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
+
+  const [email, onChangeEmail] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
+  const [password, onChangePassword] = useInput('');
+
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const onChangePasswordCheck = useCallback(
     (e) => {

@@ -49,8 +49,6 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 const dummyUser = (data) => ({
   ...data,
-  nickname: 'SeYoo',
-  id: 1,
   Posts: [],
   Followings: [],
   Followers: [],
