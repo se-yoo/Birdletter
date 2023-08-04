@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+  loadMyInfoLoading: false, // 내 정보 조회 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: false,
   followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
@@ -47,6 +50,10 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
 export const loginRequestAction = (data) => {
   return {
     type: LOG_IN_REQUEST,
@@ -63,6 +70,20 @@ export const logoutRequestAction = () => {
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoDone = false;
+        draft.loadMyInfoError = null;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
+        draft.me = action.data;
+        draft.loadMyInfoDone = true;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = action.error || action.data;
+        break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
         draft.followDone = false;
@@ -75,7 +96,7 @@ const reducer = (state = initialState, action) =>
         break;
       case FOLLOW_FAILURE:
         draft.followLoading = false;
-        draft.followError = action.error;
+        draft.followError = action.error || action.data;
         break;
       case UNFOLLOW_REQUEST:
         draft.unfollowLoading = true;
@@ -91,7 +112,7 @@ const reducer = (state = initialState, action) =>
         break;
       case UNFOLLOW_FAILURE:
         draft.unfollowLoading = false;
-        draft.unfollowError = action.error;
+        draft.unfollowError = action.error || action.data;
         break;
       case LOG_IN_REQUEST:
         draft.logInLoading = true;
@@ -105,7 +126,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;
-        draft.logInError = action.error;
+        draft.logInError = action.error || action.data;
         break;
       case LOG_OUT_REQUEST:
         draft.logOutLoading = true;
@@ -119,7 +140,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
-        draft.logOutError = action.error;
+        draft.logOutError = action.error || action.data;
         break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
@@ -132,7 +153,7 @@ const reducer = (state = initialState, action) =>
         break;
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false;
-        draft.signUpError = action.error;
+        draft.signUpError = action.error || action.data;
         break;
       case ADD_POST_TO_ME:
         draft.me.Posts.unshift({ id: action.data });
