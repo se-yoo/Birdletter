@@ -1,11 +1,15 @@
-import shortid from 'shortid';
 import produce from 'immer';
-import { faker } from '@faker-js/faker';
 
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
   hasMorePost: true,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -20,31 +24,13 @@ export const initialState = {
   addCommentError: null,
 };
 
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortid.generate(),
-      User: {
-        id: shortid.generate(),
-        nickname: faker.internet.userName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.url(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortid.generate(),
-            nickname: faker.internet.userName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -75,6 +61,38 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers.push({ id: action.data.UserId });
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostError = action.error || action.data;
+        break;
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = null;
+        break;
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = action.error || action.data;
+        break;
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;
@@ -88,7 +106,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
-        draft.loadPostsError = action.data;
+        draft.loadPostsError = action.error || action.data;
         break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;
@@ -102,7 +120,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
-        draft.addPostError = action.data;
+        draft.addPostError = action.error || action.data;
         break;
       case REMOVE_POST_REQUEST:
         draft.removePostLoading = true;
@@ -116,7 +134,7 @@ const reducer = (state = initialState, action) =>
         break;
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
-        draft.removePostError = action.data;
+        draft.removePostError = action.error || action.data;
         break;
       case ADD_COMMENT_REQUEST:
         draft.addCommentLoading = true;
@@ -125,14 +143,14 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-        post.Comments.unshift(action.data.content);
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
       }
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
-        draft.addCommentError = action.data;
+        draft.addCommentError = action.error || action.data;
         break;
       default:
         break;
