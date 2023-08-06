@@ -29,7 +29,7 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 function loadPostsAPI(data) {
-  return axios.get('/posts', data);
+  return axios.get(`/posts?lastId=${data || 0}`);
 }
 
 function* loadPosts(action) {

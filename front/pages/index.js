@@ -37,8 +37,10 @@ const Home = () => {
           document.documentElement.scrollHeight -
             document.documentElement.clientHeight
       ) {
+        const lastId = mainPosts[mainPosts.length - 1]?.id;
         dispatch({
           type: LOAD_POSTS_REQUEST,
+          data: lastId,
         });
       }
     }
@@ -47,7 +49,7 @@ const Home = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [loadPostsLoading, hasMorePosts]);
+  }, [loadPostsLoading, hasMorePosts, mainPosts]);
 
   return (
     <AppLayout>
