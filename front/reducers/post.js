@@ -25,6 +25,9 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 };
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
@@ -55,6 +58,10 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addComment = (data) => ({
@@ -65,6 +72,20 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case RETWEET_REQUEST:
+        draft.retweetLoading = true;
+        draft.retweetDone = false;
+        draft.retweetError = null;
+        break;
+      case RETWEET_SUCCESS:
+        draft.retweetLoading = false;
+        draft.mainPosts.unshift(action.data);
+        draft.retweetDone = true;
+        break;
+      case RETWEET_FAILURE:
+        draft.retweetLoading = false;
+        draft.retweetError = action.error;
+        break;
       case REMOVE_IMAGE:
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
@@ -80,7 +101,7 @@ const reducer = (state = initialState, action) =>
         break;
       case UPLOAD_IMAGES_FAILURE:
         draft.uploadImagesLoading = false;
-        draft.uploadImagesError = action.error || action.data;
+        draft.uploadImagesError = action.error;
         break;
       case LIKE_POST_REQUEST:
         draft.likePostLoading = true;
@@ -96,7 +117,7 @@ const reducer = (state = initialState, action) =>
       }
       case LIKE_POST_FAILURE:
         draft.likePostLoading = false;
-        draft.likePostError = action.error || action.data;
+        draft.likePostError = action.error;
         break;
       case UNLIKE_POST_REQUEST:
         draft.unlikePostLoading = true;
@@ -112,7 +133,7 @@ const reducer = (state = initialState, action) =>
       }
       case UNLIKE_POST_FAILURE:
         draft.unlikePostLoading = false;
-        draft.unlikePostError = action.error || action.data;
+        draft.unlikePostError = action.error;
         break;
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
@@ -127,7 +148,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
-        draft.loadPostsError = action.error || action.data;
+        draft.loadPostsError = action.error;
         break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;
@@ -142,7 +163,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
-        draft.addPostError = action.error || action.data;
+        draft.addPostError = action.error;
         break;
       case REMOVE_POST_REQUEST:
         draft.removePostLoading = true;
@@ -158,7 +179,7 @@ const reducer = (state = initialState, action) =>
         break;
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
-        draft.removePostError = action.error || action.data;
+        draft.removePostError = action.error;
         break;
       case ADD_COMMENT_REQUEST:
         draft.addCommentLoading = true;
@@ -174,7 +195,7 @@ const reducer = (state = initialState, action) =>
       }
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
-        draft.addCommentError = action.error || action.data;
+        draft.addCommentError = action.error;
         break;
       default:
         break;

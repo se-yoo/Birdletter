@@ -32,7 +32,7 @@ const PostForm = () => {
       formData.append('image', p);
     });
     formData.append('content', text);
-    dispatch({
+    return dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
     });

@@ -107,7 +107,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_FOLLOWERS_FAILURE:
         draft.loadFollowersLoading = false;
-        draft.loadFollowersError = action.error || action.data;
+        draft.loadFollowersError = action.error;
         break;
       case LOAD_FOLLOWINGS_REQUEST:
         draft.loadFollowingsLoading = true;
@@ -121,7 +121,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_FOLLOWINGS_FAILURE:
         draft.loadFollowingsLoading = false;
-        draft.loadFollowingsError = action.error || action.data;
+        draft.loadFollowingsError = action.error;
         break;
       case LOAD_MY_INFO_REQUEST:
         draft.loadMyInfoLoading = true;
@@ -135,7 +135,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
-        draft.loadMyInfoError = action.error || action.data;
+        draft.loadMyInfoError = action.error;
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
@@ -149,7 +149,7 @@ const reducer = (state = initialState, action) =>
         break;
       case FOLLOW_FAILURE:
         draft.followLoading = false;
-        draft.followError = action.error || action.data;
+        draft.followError = action.error;
         break;
       case UNFOLLOW_REQUEST:
         draft.unfollowLoading = true;
@@ -165,7 +165,7 @@ const reducer = (state = initialState, action) =>
         break;
       case UNFOLLOW_FAILURE:
         draft.unfollowLoading = false;
-        draft.unfollowError = action.error || action.data;
+        draft.unfollowError = action.error;
         break;
       case REMOVE_FOLLOWER_REQUEST:
         draft.removeFollowerLoading = true;
@@ -181,7 +181,7 @@ const reducer = (state = initialState, action) =>
         break;
       case REMOVE_FOLLOWER_FAILURE:
         draft.removeFollowerLoading = false;
-        draft.removeFollowerError = action.error || action.data;
+        draft.removeFollowerError = action.error;
         break;
       case LOG_IN_REQUEST:
         draft.logInLoading = true;
@@ -195,7 +195,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;
-        draft.logInError = action.error || action.data;
+        draft.logInError = action.error;
         break;
       case LOG_OUT_REQUEST:
         draft.logOutLoading = true;
@@ -209,7 +209,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
-        draft.logOutError = action.error || action.data;
+        draft.logOutError = action.error;
         break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
@@ -222,7 +222,7 @@ const reducer = (state = initialState, action) =>
         break;
       case SIGN_UP_FAILURE:
         draft.signUpLoading = false;
-        draft.signUpError = action.error || action.data;
+        draft.signUpError = action.error;
         break;
       case CHANGE_NICKNAME_REQUEST:
         draft.changeNicknameLoading = true;
@@ -236,7 +236,7 @@ const reducer = (state = initialState, action) =>
         break;
       case CHANGE_NICKNAME_FAILURE:
         draft.changeNicknameLoading = false;
-        draft.changeNicknameError = action.error || action.data;
+        draft.changeNicknameError = action.error;
         break;
       case ADD_POST_TO_ME:
         draft.me.Posts.unshift({ id: action.data });

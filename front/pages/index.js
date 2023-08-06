@@ -10,9 +10,8 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { loadPostsLoading, mainPosts, hasMorePosts } = useSelector(
-    (state) => state.post,
-  );
+  const { loadPostsLoading, mainPosts, hasMorePosts, retweetError } =
+    useSelector((state) => state.post);
 
   useEffect(() => {
     dispatch({
@@ -22,6 +21,12 @@ const Home = () => {
       type: LOAD_POSTS_REQUEST,
     });
   }, []);
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   useEffect(() => {
     function onScroll() {
