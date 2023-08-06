@@ -26,7 +26,7 @@ const PostImages = ({ images }) => {
               objectFit: 'cover',
               display: 'inline-block',
             }}
-            src={image.src}
+            src={`http://localhost:3065/${image.src}`}
             alt={image.src}
             onClick={onZoom}
           />
@@ -47,7 +47,7 @@ const PostImages = ({ images }) => {
             objectFit: 'cover',
             display: 'inline-block',
           }}
-          src={images[0].src}
+          src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
         />
