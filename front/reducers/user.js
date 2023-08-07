@@ -4,6 +4,9 @@ export const initialState = {
   loadMyInfoLoading: false, // 내 정보 조회 시도중
   loadMyInfoDone: false,
   loadMyInfoError: false,
+  loadUserLoading: false, // 사용자 정보 조회 시도중
+  loadUserDone: false,
+  loadUserError: false,
   followLoading: false, // 팔로우 시도중
   followDone: false,
   followError: null,
@@ -32,8 +35,7 @@ export const initialState = {
   loadFollowingsDone: false,
   loadFollowingsError: null,
   me: null,
-  signUpData: {},
-  loginData: {},
+  userInfo: null,
 };
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
@@ -74,6 +76,10 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
@@ -136,6 +142,20 @@ const reducer = (state = initialState, action) =>
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
         draft.loadMyInfoError = action.error;
+        break;
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.userInfo = action.data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
