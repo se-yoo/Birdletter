@@ -5,17 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "seyoo",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@next/bundle-analyzer": "^13.4.13",
     "antd": "^4.6.6",
     "axios": "^1.4.0",
     "babel-plugin-styled-components": "^2.1.4",
+    "cross-env": "^7.0.3",
     "immer": "^9.0.19",
+    "moment": "^2.29.4",
     "next": "^9.5.5",
     "next-redux-wrapper": "^8.1.0",
     "prop-types": "^15.8.1",

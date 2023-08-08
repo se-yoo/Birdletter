@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Avatar, Button, Card, List, Popover, Comment } from 'antd';
 import {
   EllipsisOutlined,
@@ -9,6 +9,8 @@ import {
 } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import Link from 'next/link';
+import moment from 'moment';
 
 import PostImages from './PostImages';
 import useToggle from '../hooks/useToggle';
@@ -21,6 +23,8 @@ import {
   RETWEET_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
+
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -120,18 +124,38 @@ const PostCard = ({ post }) => {
               )
             }
           >
+            <div style={{ float: 'right' }}>
+              {moment(post.createdAt).format('YYYY.MM.DD')}
+            </div>
             <Card.Meta
-              avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+              avatar={
+                <Link href={`/user/${post.Retweet.User.id}`}>
+                  <a>
+                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
               title={post.Retweet.User.nickname}
               description={<PostCardContent postData={post.Retweet.content} />}
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: 'right' }}>
+              {moment(post.createdAt).format('YYYY.MM.DD')}
+            </div>
+            <Card.Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <a>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (
