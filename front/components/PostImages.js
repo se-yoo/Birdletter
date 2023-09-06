@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
 
 import ImagesZoom from './ImagesZoom';
+import { backUrl } from '../config/config';
 
 const PostImages = ({ images }) => {
   const [showImageZoom, setShowImageZoom] = useState(false);
@@ -26,7 +27,7 @@ const PostImages = ({ images }) => {
               objectFit: 'cover',
               display: 'inline-block',
             }}
-            src={`http://localhost:3065/${image.src}`}
+            src={`${backUrl}/${image.src}`}
             alt={image.src}
             onClick={onZoom}
           />
@@ -47,7 +48,7 @@ const PostImages = ({ images }) => {
             objectFit: 'cover',
             display: 'inline-block',
           }}
-          src={`http://localhost:3065/${images[0].src}`}
+          src={`${backUrl}/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
         />
