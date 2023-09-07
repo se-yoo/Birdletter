@@ -1,4 +1,4 @@
-import { all, fork, put, delay, takeLatest, call } from 'redux-saga/effects';
+import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   ADD_POST_REQUEST,
@@ -34,6 +34,9 @@ import {
   LOAD_HASHTAG_POSTS_REQUEST,
   LOAD_HASHTAG_POSTS_SUCCESS,
   LOAD_HASHTAG_POSTS_FAILURE,
+  UPDATE_POST_REQUEST,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
 } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -162,6 +165,26 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function updatePostAPI(data) {
+  return axios.patch(`/post/${data.id}`, data);
+}
+
+function* updatePost(action) {
+  try {
+    const result = yield call(updatePostAPI, action.data);
+    yield put({
+      type: UPDATE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_POST_FAILURE,
       error: err.response.data,
     });
   }
@@ -307,6 +330,10 @@ function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
 
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+}
+
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
@@ -323,6 +350,7 @@ export default function* postSaga() {
     fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchRemovePost),
+    fork(watchUpdatePost),
     fork(watchAddComment),
   ]);
 }

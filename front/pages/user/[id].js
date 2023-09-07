@@ -73,7 +73,7 @@ function User() {
       )}
       {userInfo && userInfo.id !== me?.id ? (
         <Card
-          style={{ marginBottom: 20 }}
+          style={{ marginBottom: 10 }}
           actions={[
             <div key="twit">
               짹짹
