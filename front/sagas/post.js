@@ -72,7 +72,10 @@ function* loadUserPosts(action) {
     const result = yield call(loadUserPostsAPI, action.data, action.lastId);
     yield put({
       type: LOAD_USER_POSTS_SUCCESS,
-      data: result.data,
+      data: {
+        posts: result.data,
+        reset: action.lastId === undefined,
+      },
     });
   } catch (err) {
     console.error(err);
@@ -94,7 +97,10 @@ function* loadHashtagPosts(action) {
     const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
     yield put({
       type: LOAD_HASHTAG_POSTS_SUCCESS,
-      data: result.data,
+      data: {
+        posts: result.data,
+        reset: action.lastId === undefined,
+      },
     });
   } catch (err) {
     console.error(err);

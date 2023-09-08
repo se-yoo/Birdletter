@@ -55,9 +55,16 @@ const UserProfile = () => {
         }
         title={me.nickname}
         description={
-          <Button onClick={onLogOut} loading={logOutLoading}>
-            로그아웃
-          </Button>
+          <>
+            <Button style={{ marginRight: 10 }}>
+              <Link href="/profile">
+                <a>프로필</a>
+              </Link>
+            </Button>
+            <Button onClick={onLogOut} loading={logOutLoading}>
+              로그아웃
+            </Button>
+          </>
         }
       />
     </Card>

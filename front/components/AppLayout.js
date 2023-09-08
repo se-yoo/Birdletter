@@ -14,6 +14,11 @@ const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
 
+const AppMenu = styled(Menu)`
+  display: flex;
+  justify-content: center;
+`;
+
 const Global = createGlobalStyle`
   .ant-row {
     margin-right: 0 !important;
@@ -27,6 +32,10 @@ const Global = createGlobalStyle`
   .ant-col:last-child {
     padding-right: 0 !important;
   }
+
+  textarea.ant-input {
+    resize: none;
+  }
 `;
 
 const AppLayout = ({ children }) => {
@@ -34,24 +43,20 @@ const AppLayout = ({ children }) => {
   const [searchInput, onChangeSearchInput] = useInput('');
 
   const onSearch = useCallback(() => {
+    if (!searchInput) return;
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
 
   return (
     <div>
       <Global />
-      <Menu mode="horizontal">
+      <AppMenu mode="horizontal">
         <Menu.Item>
           <Link href="/">
             <a>노드버드</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
-          <Link href="/profile">
-            <a>프로필</a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
+        <Menu.Item style={{ minWidth: '30%' }}>
           <SearchInput
             enterButton
             value={searchInput}
@@ -59,27 +64,13 @@ const AppLayout = ({ children }) => {
             onSearch={onSearch}
           />
         </Menu.Item>
-        <Menu.Item>
-          <Link href="/signup">
-            <a>회원가입</a>
-          </Link>
-        </Menu.Item>
-      </Menu>
-      <Row gutter={8}>
+      </AppMenu>
+      <Row gutter={20} justify="center" style={{ padding: 10 }}>
         <Col xs={24} md={6}>
           {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
-        </Col>
-        <Col xs={24} md={6}>
-          <a
-            href="https://github.com/se-yoo"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Made by SeYoo
-          </a>
         </Col>
       </Row>
     </div>

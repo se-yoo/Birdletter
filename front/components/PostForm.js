@@ -65,7 +65,7 @@ const PostForm = () => {
 
   return (
     <Form
-      style={{ margin: '10px 0 20px' }}
+      style={{ margin: '0 0 20px' }}
       encType="multipart/form-data"
       onFinish={onSubmit}
     >
@@ -73,9 +73,10 @@ const PostForm = () => {
         value={text}
         onChange={onChangeText}
         maxLength={140}
+        rows={5}
         placeholder="어떤 신기한 일이 있었나요?"
       />
-      <div>
+      <div style={{ marginTop: 10 }}>
         <input
           type="file"
           name="image"
