@@ -168,7 +168,9 @@ const reducer = (state = initialState, action) =>
       case LOAD_POSTS_SUCCESS:
       case LOAD_USER_POSTS_SUCCESS:
       case LOAD_HASHTAG_POSTS_SUCCESS:
-        draft.mainPosts = draft.mainPosts.concat(action.data);
+        draft.mainPosts = action.data.reset
+          ? action.data.posts
+          : draft.mainPosts.concat(action.data.posts);
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.hasMorePosts = draft.mainPosts.length === 10;

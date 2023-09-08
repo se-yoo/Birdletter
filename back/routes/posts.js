@@ -7,7 +7,23 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const where = {};
+    let where = {};
+    if (req.user) {
+      // 로그인 상태면 자신 + 팔로잉 게시글만 보이게
+      const followings = await User.findAll({
+        attributes: ['id'],
+        include: [
+          {
+            model: User,
+            as: 'Followers',
+            where: { id: req.user.id },
+          },
+        ],
+      });
+      where = {
+        UserId: { [Op.in]: [req.user.id, ...followings.map((v) => v.id)] },
+      };
+    }
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };

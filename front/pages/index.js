@@ -23,6 +23,12 @@ const Home = () => {
   }, [retweetError]);
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+  }, [me]);
+
+  useEffect(() => {
     function onScroll() {
       if (
         !loadPostsLoading &&

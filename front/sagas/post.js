@@ -49,7 +49,10 @@ function* loadPosts(action) {
     const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: result.data,
+      data: {
+        posts: result.data,
+        reset: action.data === undefined,
+      },
     });
   } catch (err) {
     console.error(err);
