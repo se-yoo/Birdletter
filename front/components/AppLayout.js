@@ -9,14 +9,19 @@ import Router from 'next/router';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 import useInput from '../hooks/useInput';
-
-const SearchInput = styled(Input.Search)`
-  vertical-align: middle;
-`;
+import logoImage from '../images/logo.png';
 
 const AppMenu = styled(Menu)`
-  display: flex;
-  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 56px;
+  display: block;
+  padding: 0 10px;
+
+  & .ant-row {
+    height: 56px;
+  }
 `;
 
 const Global = createGlobalStyle`
@@ -51,25 +56,30 @@ const AppLayout = ({ children }) => {
     <div>
       <Global />
       <AppMenu mode="horizontal">
-        <Menu.Item>
-          <Link href="/">
-            <a>노드버드</a>
-          </Link>
-        </Menu.Item>
-        <Menu.Item style={{ minWidth: '30%' }}>
-          <SearchInput
-            enterButton
-            value={searchInput}
-            onChange={onChangeSearchInput}
-            onSearch={onSearch}
-          />
-        </Menu.Item>
+        <Row gutter={20} justify="center" align="center">
+          <Col md={4} style={{ textAlign: 'center' }}>
+            <Link href="/">
+              <a>
+                <img src={logoImage} alt="birdletter-logo" height="32px" />
+              </a>
+            </Link>
+          </Col>
+          <Col md={10}>
+            <Input.Search
+              enterButton
+              style={{ verticalAlign: 'middle' }}
+              value={searchInput}
+              onChange={onChangeSearchInput}
+              onSearch={onSearch}
+            />
+          </Col>
+        </Row>
       </AppMenu>
       <Row gutter={20} justify="center" style={{ padding: 10 }}>
-        <Col xs={24} md={6}>
+        <Col xs={24} md={4}>
           {me ? <UserProfile /> : <LoginForm />}
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} md={10}>
           {children}
         </Col>
       </Row>

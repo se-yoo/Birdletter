@@ -78,7 +78,7 @@ const Signup = () => {
   return (
     <>
       <Head>
-        <title>회원가입 | NodeBird</title>
+        <title>회원가입 | Birdletter</title>
       </Head>
       <AppLayout>
         <Form onFinish={onSubmit}>

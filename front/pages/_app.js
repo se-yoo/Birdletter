@@ -10,7 +10,7 @@ const App = ({ Component }) => {
     <>
       <Head>
         <meta charSet="utf-8" />
-        <title>NodeBird</title>
+        <title>Birdletter</title>
       </Head>
       <Component />
     </>

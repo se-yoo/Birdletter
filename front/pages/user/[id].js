@@ -66,9 +66,12 @@ function User() {
           />
           <meta
             property="og:image"
-            content="https://nodebird.com/favicon.ico"
+            content="https://birdletter.com/favicon.ico"
           />
-          <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
+          <meta
+            property="og:url"
+            content={`https://birdletter.com/user/${id}`}
+          />
         </Head>
       )}
       {userInfo && userInfo.id !== me?.id ? (

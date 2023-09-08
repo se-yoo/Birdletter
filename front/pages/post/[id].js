@@ -26,15 +26,15 @@ const Post = () => {
           content={`${singlePost.content}님의 게시글`}
         />
         <meta property="og:description" content={singlePost.content} />
-        <meta
+        {/* <meta
           property="og:image"
           content={
             singlePost.Images[0]
               ? singlePost.Images[0].src
-              : 'https://nodebird/favicon.ico'
+              : 'https://birdletter/favicon.ico'
           }
         />
-        <meta property="og:url" content={`https://nodebird.com/post/${id}`} />
+        <meta property="og:url" content={`https://birdletter.com/post/${id}`} /> */}
       </Head>
       <PostCard post={singlePost} />
     </AppLayout>

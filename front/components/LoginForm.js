@@ -7,14 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import useInput from '../hooks/useInput';
 import { loginRequestAction } from '../reducers/user';
 
-const FormWrapper = styled(Form)`
-  padding: 10px;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 10px;
-`;
-
 const LoginForm = () => {
   const dispatch = useDispatch();
   const { logInLoading, logInError } = useSelector((state) => state.user);
@@ -32,7 +24,7 @@ const LoginForm = () => {
   }, [email, password]);
 
   return (
-    <FormWrapper onFinish={onSubmitForm}>
+    <Form onFinish={onSubmitForm} style={{ padding: '10px' }}>
       <div>
         <label htmlFor="user-email">이메일</label>
         <br />
@@ -55,8 +47,13 @@ const LoginForm = () => {
           required
         />
       </div>
-      <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={logInLoading}>
+      <div style={{ marginTop: 10 }}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={logInLoading}
+          style={{ marginRight: 10 }}
+        >
           로그인
         </Button>
         <Link href="/signup">
@@ -64,8 +61,8 @@ const LoginForm = () => {
             <Button>회원가입</Button>
           </a>
         </Link>
-      </ButtonWrapper>
-    </FormWrapper>
+      </div>
+    </Form>
   );
 };
 
