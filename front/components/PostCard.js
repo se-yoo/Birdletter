@@ -109,7 +109,12 @@ const PostCard = ({ post }) => {
           ) : (
             <HeartOutlined key="heart" onClick={onLike} />
           ),
-          <MessageOutlined key="comment" onClick={onToggleComment} />,
+          <div style={{ textAlign: 'center' }} onClick={onToggleComment}>
+            <MessageOutlined style={{ width: 'auto' }} key="comment" />
+            {post.Comments.length > 0 && (
+              <span style={{ marginLeft: 10 }}>{post.Comments.length}</span>
+            )}
+          </div>,
           <Popover
             key="more"
             content={

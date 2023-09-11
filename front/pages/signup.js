@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
@@ -11,6 +11,7 @@ import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
 import { LOAD_MY_INFO_REQUEST, SIGN_UP_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
+import LabelInput from '../components/LabelInput';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -82,53 +83,44 @@ const Signup = () => {
       </Head>
       <AppLayout>
         <Form onFinish={onSubmit}>
-          <div>
-            <label htmlFor="user-email">이메일</label>
-            <br />
-            <Input
-              name="user-email"
-              type="email"
-              value={email}
-              required
-              onChange={onChangeEmail}
-            />
-          </div>
-          <div>
-            <label htmlFor="user-nickname">닉네임</label>
-            <br />
-            <Input
-              name="user-nickname"
-              value={nickname}
-              required
-              onChange={onChangeNickname}
-            />
-          </div>
-          <div>
-            <label htmlFor="user-password">비밀번호</label>
-            <br />
-            <Input
-              name="user-password"
-              type="password"
-              value={password}
-              required
-              onChange={onChangePassword}
-            />
-          </div>
-          <div>
-            <label htmlFor="user-password-check">비밀번호 확인</label>
-            <br />
-            <Input
-              name="user-password-check"
-              type="password"
-              value={passwordCheck}
-              required
-              onChange={onChangePasswordCheck}
-            />
-            {passwordError && (
-              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-            )}
-          </div>
-          <div>
+          <LabelInput
+            name="user-email"
+            type="email"
+            label="이메일"
+            value={email}
+            required
+            sx={{ marginTop: 10 }}
+            onChange={onChangeEmail}
+          />
+          <LabelInput
+            name="user-nickname"
+            label="닉네임"
+            value={nickname}
+            required
+            onChange={onChangeNickname}
+          />
+          <LabelInput
+            name="user-password"
+            type="password"
+            label="비밀번호"
+            value={password}
+            required
+            onChange={onChangePassword}
+          />
+          <LabelInput
+            name="user-password-check"
+            type="password"
+            label="비밀번호 확인"
+            value={passwordCheck}
+            required
+            onChange={onChangePasswordCheck}
+            append={
+              passwordError && (
+                <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              )
+            }
+          />
+          <div style={{ marginTop: 5 }}>
             <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
               개인정보 이용에 동의합니다.
             </Checkbox>
@@ -136,7 +128,7 @@ const Signup = () => {
               <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>
             )}
           </div>
-          <div style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 10, textAlign: 'right' }}>
             <Button type="primary" htmlType="submit" loading={signUpLoading}>
               가입하기
             </Button>

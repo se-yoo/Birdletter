@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
-import { Button, Form, Input } from 'antd';
+import { Button, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
 import { loginRequestAction } from '../reducers/user';
+import LabelInput from './LabelInput';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -25,29 +25,23 @@ const LoginForm = () => {
 
   return (
     <Form onFinish={onSubmitForm} style={{ padding: '10px' }}>
-      <div>
-        <label htmlFor="user-email">이메일</label>
-        <br />
-        <Input
-          name="user-email"
-          type="email"
-          value={email}
-          onChange={onChangeEmail}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="user-password">비밀번호</label>
-        <br />
-        <Input
-          name="user-password"
-          type="password"
-          value={password}
-          onChange={onChangePassword}
-          required
-        />
-      </div>
-      <div style={{ marginTop: 10 }}>
+      <LabelInput
+        name="user-email"
+        type="email"
+        label="이메일"
+        value={email}
+        required
+        onChange={onChangeEmail}
+      />
+      <LabelInput
+        name="user-password"
+        type="password"
+        label="비밀번호"
+        value={password}
+        required
+        onChange={onChangePassword}
+      />
+      <div style={{ margin: '20px 0', textAlign: 'right' }}>
         <Button
           type="primary"
           htmlType="submit"

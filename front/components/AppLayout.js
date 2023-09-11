@@ -57,14 +57,14 @@ const AppLayout = ({ children }) => {
       <Global />
       <AppMenu mode="horizontal">
         <Row gutter={20} justify="center" align="center">
-          <Col md={4} style={{ textAlign: 'center' }}>
+          <Col sm={10} md={8} lg={6} xl={4} style={{ textAlign: 'center' }}>
             <Link href="/">
               <a>
                 <img src={logoImage} alt="birdletter-logo" height="32px" />
               </a>
             </Link>
           </Col>
-          <Col md={10}>
+          <Col sm={12} lg={10} xl={8}>
             <Input.Search
               enterButton
               style={{ verticalAlign: 'middle' }}
@@ -76,10 +76,10 @@ const AppLayout = ({ children }) => {
         </Row>
       </AppMenu>
       <Row gutter={20} justify="center" style={{ padding: 10 }}>
-        <Col xs={24} md={4}>
+        <Col xs={24} sm={10} md={8} lg={6} xl={4}>
           {me ? <UserProfile /> : <LoginForm />}
         </Col>
-        <Col xs={24} md={10}>
+        <Col xs={24} sm={12} lg={10} xl={8}>
           {children}
         </Col>
       </Row>

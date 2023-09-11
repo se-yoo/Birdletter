@@ -29,15 +29,18 @@ const CommentForm = ({ post }) => {
   }, [commentText, id]);
 
   return (
-    <Form onFinish={onSubmitComment}>
-      <Form.Item style={{ position: 'relative', margin: 0 }}>
+    <Form
+      style={{ marginTop: 10, textAlign: 'right' }}
+      onFinish={onSubmitComment}
+    >
+      <Form.Item style={{ marginBottom: 10 }}>
         <Input.TextArea
           value={commentText}
           onChange={onChangeCommentText}
           rows={4}
         />
         <Button
-          style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
+          style={{ marginTop: 10, zIndex: 1 }}
           type="primary"
           htmlType="submit"
           loading={addCommentLoading}
