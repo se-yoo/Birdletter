@@ -22,7 +22,7 @@
 
 ## 실행 화면 ##
 <div>
-  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/396004cf-1842-4871-9ecf-9718fcf057f8" width="800">
-  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/2721087c-1d1c-4126-af2b-a03cfb5c67b4" width="800">
-  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/1d6cf467-bf30-4e1e-a991-a5802e5fbe0c" width="800">
+  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/5ea1b018-cc17-4cd6-acea-8e6e2b04b93d" width="800">
+  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/cf0ce8db-b743-4fe4-9690-c66a4b482999" width="800">
+  <img src="https://github.com/se-yoo/Birdletter/assets/26541472/80851620-cc5b-44d5-a4a8-a93387ef7bc2" width="800">
 </div>
