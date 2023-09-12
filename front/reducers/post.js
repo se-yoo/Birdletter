@@ -35,6 +35,9 @@ export const initialState = {
   retweetLoading: false,
   retweetDone: false,
   retweetError: null,
+  unretweetLoading: false,
+  unretweetDone: false,
+  unretweetError: null,
 };
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
@@ -85,6 +88,10 @@ export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
 export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
+export const UNRETWEET_REQUEST = 'UNRETWEET_REQUEST';
+export const UNRETWEET_SUCCESS = 'UNRETWEET_SUCCESS';
+export const UNRETWEET_FAILURE = 'UNRETWEET_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addComment = (data) => ({
@@ -95,16 +102,48 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case UNRETWEET_REQUEST:
+        draft.unretweetLoading = true;
+        draft.unretweetDone = false;
+        draft.unretweetError = null;
+        break;
+      case UNRETWEET_SUCCESS: {
+        draft.unretweetLoading = false;
+        const post = draft.mainPosts.find(
+          (v) => v.id === action.data.RetweetId,
+        );
+        if (post) {
+          post.Retweeters = post.Retweeters.filter(
+            (v) => v.id !== action.data.UserId,
+          );
+        }
+        draft.mainPosts = draft.mainPosts.filter(
+          (v) => v.id !== action.data.PostId,
+        );
+        draft.unretweetDone = true;
+        break;
+      }
+      case UNRETWEET_FAILURE:
+        draft.unretweetLoading = false;
+        draft.unretweetError = action.error;
+        break;
       case RETWEET_REQUEST:
         draft.retweetLoading = true;
         draft.retweetDone = false;
         draft.retweetError = null;
         break;
-      case RETWEET_SUCCESS:
+      case RETWEET_SUCCESS: {
         draft.retweetLoading = false;
         draft.mainPosts.unshift(action.data);
+        const post = draft.mainPosts.find(
+          (v) => v.id === action.data.RetweetId,
+        );
+        if (post) {
+          post.Retweeters.push({ id: action.data.UserId });
+        }
         draft.retweetDone = true;
         break;
+      }
       case RETWEET_FAILURE:
         draft.retweetLoading = false;
         draft.retweetError = action.error;
@@ -216,7 +255,7 @@ const reducer = (state = initialState, action) =>
         draft.removePostError = null;
         break;
       case REMOVE_POST_SUCCESS:
-        draft.mainPosts = state.mainPosts.filter(
+        draft.mainPosts = draft.mainPosts.filter(
           (v) => v.id !== action.data.PostId,
         );
         draft.removePostLoading = false;

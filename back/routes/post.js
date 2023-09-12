@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
+const Sequelize = require('sequelize');
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -80,6 +81,14 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
           model: User,
           as: 'Likers',
           attributes: ['id'],
+        },
+        {
+          model: Post,
+          association: new Sequelize.HasMany(Post, Post, {
+            as: 'Retweeters',
+            foreignKey: 'RetweetId',
+          }),
+          attributes: [['UserId', 'id']],
         },
       ],
     });
@@ -201,6 +210,14 @@ router.get('/:postId', async (req, res, next) => {
             },
           ],
         },
+        {
+          model: Post,
+          association: new Sequelize.HasMany(Post, Post, {
+            as: 'Retweeters',
+            foreignKey: 'RetweetId',
+          }),
+          attributes: [['UserId', 'id']],
+        },
       ],
     });
     res.status(200).json(fullPost);
@@ -247,8 +264,24 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
       content: 'retweet',
     });
     const retweetWithPrevPost = await Post.findOne({
-      where: { id: retweet.RetweetId },
+      where: { id: retweet.id },
       include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['id', 'nickname'] }],
+        },
+        {
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
+        },
         {
           model: Post,
           as: 'Retweet',
@@ -263,24 +296,38 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
           ],
         },
         {
-          model: User,
-          attributes: ['id', 'nickname'],
-        },
-        {
-          model: Image,
-        },
-        {
-          model: Comment,
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'nickname'],
-            },
-          ],
+          model: Post,
+          association: new Sequelize.HasMany(Post, Post, {
+            as: 'Retweeters',
+            foreignKey: 'RetweetId',
+          }),
+          attributes: [['UserId', 'id']],
         },
       ],
     });
     res.status(200).json(retweetWithPrevPost);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.delete('/:postId/retweet', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { RetweetId: req.params.postId, UserId: req.user.id },
+    });
+    if (!post) {
+      return res.status(403).send('게시글이 존재하지 않습니다.');
+    }
+    await Post.destroy({
+      where: { RetweetId: req.params.postId, UserId: req.user.id },
+    });
+    res.status(200).json({
+      PostId: post.id,
+      RetweetId: post.RetweetId,
+      UserId: req.user.id,
+    });
   } catch (err) {
     console.error(err);
     next(err);

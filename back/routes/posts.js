@@ -1,4 +1,5 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const { Post, Image, User, Comment } = require('../models');
@@ -64,6 +65,14 @@ router.get('/', async (req, res, next) => {
               model: Image,
             },
           ],
+        },
+        {
+          model: Post,
+          association: new Sequelize.HasMany(Post, Post, {
+            as: 'Retweeters',
+            foreignKey: 'RetweetId',
+          }),
+          attributes: [['UserId', 'id']],
         },
       ],
     });

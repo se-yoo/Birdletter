@@ -21,6 +21,7 @@ import {
   REMOVE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
   RETWEET_REQUEST,
+  UNRETWEET_REQUEST,
   UPDATE_POST_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
@@ -33,6 +34,9 @@ const PostCard = ({ post }) => {
   const { removePostLoading } = useSelector((state) => state.post);
   const id = me?.id;
   const liked = post.Likers.find((v) => v.id === id);
+  const retweeted =
+    (post.User.id === id && post.RetweetId) ||
+    post.Retweeters.find((v) => v.id === id);
   const [commentFormOpened, onToggleComment] = useToggle(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -84,6 +88,16 @@ const PostCard = ({ post }) => {
     });
   }, []);
 
+  const onUnRetweet = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: UNRETWEET_REQUEST,
+      data: post.RetweetId || post.id,
+    });
+  }, [id]);
+
   const onRetweet = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -99,7 +113,15 @@ const PostCard = ({ post }) => {
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key="retweet" onClick={onRetweet} />,
+          retweeted ? (
+            <RetweetOutlined
+              style={{ color: '#2bbb00' }}
+              key="retweet"
+              onClick={onUnRetweet}
+            />
+          ) : (
+            <RetweetOutlined key="retweet" onClick={onRetweet} />
+          ),
           liked ? (
             <HeartTwoTone
               twoToneColor="#eb2f96"
@@ -115,31 +137,29 @@ const PostCard = ({ post }) => {
               <span style={{ marginLeft: 10 }}>{post.Comments.length}</span>
             )}
           </div>,
-          <Popover
-            key="more"
-            content={
-              <Button.Group>
-                {id && post.User.id === id ? (
-                  <>
-                    {!post.RetweetId && (
-                      <Button onClick={onClickUpdate}>수정</Button>
-                    )}
-                    <Button
-                      type="danger"
-                      loading={removePostLoading}
-                      onClick={onRemovePost}
-                    >
-                      삭제
-                    </Button>
-                  </>
-                ) : (
-                  <Button>신고</Button>
-                )}
-              </Button.Group>
-            }
-          >
-            <EllipsisOutlined />
-          </Popover>,
+          id && post.User.id === id ? (
+            <Popover
+              key="more"
+              content={
+                <Button.Group>
+                  {!post.RetweetId && (
+                    <Button onClick={onClickUpdate}>수정</Button>
+                  )}
+                  <Button
+                    type="danger"
+                    loading={removePostLoading}
+                    onClick={onRemovePost}
+                  >
+                    삭제
+                  </Button>
+                </Button.Group>
+              }
+            >
+              <EllipsisOutlined />
+            </Popover>
+          ) : (
+            <></>
+          ),
         ]}
         title={
           post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null
@@ -227,6 +247,7 @@ PostCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
     Likers: PropTypes.arrayOf(PropTypes.object),
+    Retweeters: PropTypes.arrayOf(PropTypes.object),
     RetweetId: PropTypes.number,
     Retweet: PropTypes.object,
   }).isRequired,
