@@ -1,4 +1,5 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const { Hashtag, Post, User, Image, Comment } = require('../models');
@@ -52,6 +53,14 @@ router.get('/:hashtag', async (req, res, next) => {
               model: Image,
             },
           ],
+        },
+        {
+          model: Post,
+          association: new Sequelize.HasMany(Post, Post, {
+            as: 'Retweeters',
+            foreignKey: 'RetweetId',
+          }),
+          attributes: [['UserId', 'id']],
         },
       ],
     });
