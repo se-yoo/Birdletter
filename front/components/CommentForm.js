@@ -38,15 +38,19 @@ const CommentForm = ({ post }) => {
           value={commentText}
           onChange={onChangeCommentText}
           rows={4}
+          disabled={!id}
+          placeholder={!id ? '로그인이 필요합니다' : '댓글을 입력하세요'}
         />
-        <Button
-          style={{ marginTop: 10, zIndex: 1 }}
-          type="primary"
-          htmlType="submit"
-          loading={addCommentLoading}
-        >
-          등록
-        </Button>
+        {id && (
+          <Button
+            style={{ marginTop: 10, zIndex: 1 }}
+            type="primary"
+            htmlType="submit"
+            loading={addCommentLoading}
+          >
+            등록
+          </Button>
+        )}
       </Form.Item>
     </Form>
   );

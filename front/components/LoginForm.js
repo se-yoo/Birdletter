@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { Button, Form } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
@@ -15,7 +15,11 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (logInError) {
-      alert(logInError);
+      Modal.warning({
+        title: '로그인 실패',
+        content: logInError,
+        okText: '확인',
+      });
     }
   }, [logInError]);
 

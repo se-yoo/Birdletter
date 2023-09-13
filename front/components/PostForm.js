@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useRef } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -25,7 +25,11 @@ const PostForm = () => {
 
   const onSubmit = useCallback(() => {
     if (!text || !text.trim()) {
-      return alert('게시글을 작성하세요.');
+      return Modal.warning({
+        title: '등록 실패',
+        content: '게시글을 작성하세요.',
+        okText: '확인',
+      });
     }
     const formData = new FormData();
     imagePaths.forEach((p) => {

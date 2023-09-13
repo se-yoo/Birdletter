@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Avatar, Button, Card, List, Popover, Comment } from 'antd';
+import { Avatar, Button, Card, List, Popover, Comment, Modal } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
@@ -35,6 +35,14 @@ const PostCard = ({ post }) => {
   const [commentFormOpened, onToggleComment] = useToggle(false);
   const [editMode, setEditMode] = useState(false);
 
+  const openLoginModal = useCallback(() => {
+    Modal.warning({
+      title: '오류 발생',
+      content: '로그인이 필요합니다.',
+      okText: '확인',
+    });
+  }, []);
+
   const onClickUpdate = useCallback(() => {
     setEditMode(true);
   }, []);
@@ -65,7 +73,7 @@ const PostCard = ({ post }) => {
 
   const onLike = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return openLoginModal();
     }
     return dispatch({
       type: LIKE_POST_REQUEST,
@@ -75,7 +83,7 @@ const PostCard = ({ post }) => {
 
   const onUnlike = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return openLoginModal();
     }
     return dispatch({
       type: UNLIKE_POST_REQUEST,
@@ -85,7 +93,7 @@ const PostCard = ({ post }) => {
 
   const onUnRetweet = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return openLoginModal();
     }
     return dispatch({
       type: UNRETWEET_REQUEST,
@@ -95,7 +103,7 @@ const PostCard = ({ post }) => {
 
   const onRetweet = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return openLoginModal();
     }
     return dispatch({
       type: RETWEET_REQUEST,

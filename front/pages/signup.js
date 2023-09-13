@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
-import { Button, Checkbox, Form } from 'antd';
+import { Button, Checkbox, Form, Modal } from 'antd';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
@@ -37,7 +37,11 @@ const Signup = () => {
 
   useEffect(() => {
     if (signUpError) {
-      alert(signUpError);
+      Modal.warning({
+        title: '회원가입 실패',
+        content: signUpError,
+        okText: '확인',
+      });
     }
   }, [signUpError]);
 
