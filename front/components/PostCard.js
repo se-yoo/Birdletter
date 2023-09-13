@@ -1,21 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Avatar, Button, Card, List, Popover, Comment } from 'antd';
-import {
-  EllipsisOutlined,
-  HeartTwoTone,
-  HeartOutlined,
-  MessageOutlined,
-  RetweetOutlined,
-} from '@ant-design/icons';
+import { EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 
-import PostImages from './PostImages';
-import useToggle from '../hooks/useToggle';
-import CommentForm from './CommentForm';
-import PostCardContent from './PostCardContent';
 import {
   LIKE_POST_REQUEST,
   REMOVE_POST_REQUEST,
@@ -24,7 +14,12 @@ import {
   UNRETWEET_REQUEST,
   UPDATE_POST_REQUEST,
 } from '../reducers/post';
+import PostImages from './PostImages';
+import useToggle from '../hooks/useToggle';
+import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
 import FollowButton from './FollowButton';
+import PostCardAction from './PostCardAction';
 
 moment.locale('ko');
 
@@ -113,30 +108,29 @@ const PostCard = ({ post }) => {
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          retweeted ? (
-            <RetweetOutlined
-              style={{ color: '#2bbb00' }}
-              key="retweet"
-              onClick={onUnRetweet}
-            />
-          ) : (
-            <RetweetOutlined key="retweet" onClick={onRetweet} />
-          ),
-          liked ? (
-            <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="heart"
-              onClick={onUnlike}
-            />
-          ) : (
-            <HeartOutlined key="heart" onClick={onLike} />
-          ),
-          <div style={{ textAlign: 'center' }} onClick={onToggleComment}>
-            <MessageOutlined style={{ width: 'auto' }} key="comment" />
-            {post.Comments.length > 0 && (
-              <span style={{ marginLeft: 10 }}>{post.Comments.length}</span>
-            )}
-          </div>,
+          <PostCardAction
+            type="retweet"
+            active={retweeted}
+            color="#2bbb00"
+            count={post.Retweeters.length}
+            onActive={onRetweet}
+            onInactive={onUnRetweet}
+          />,
+          <PostCardAction
+            type="heart"
+            active={liked}
+            color="#eb2f96"
+            count={post.Likers.length}
+            onActive={onLike}
+            onInactive={onUnlike}
+          />,
+          <PostCardAction
+            type="comment"
+            color="#eb2f96"
+            count={post.Comments.length}
+            onActive={onToggleComment}
+            onInactive={onToggleComment}
+          />,
           id && post.User.id === id ? (
             <Popover
               key="more"
@@ -190,29 +184,24 @@ const PostCard = ({ post }) => {
             />
           </Card>
         ) : (
-          <>
-            <div style={{ float: 'right' }}>
-              {moment(post.createdAt).format('YYYY.MM.DD')}
-            </div>
-            <Card.Meta
-              avatar={
-                <Link href={`/user/${post.User.id}`} prefetch={false}>
-                  <a>
-                    <Avatar>{post.User.nickname[0]}</Avatar>
-                  </a>
-                </Link>
-              }
-              title={post.User.nickname}
-              description={
-                <PostCardContent
-                  editMode={editMode}
-                  onChangePost={onChangePost}
-                  onCancelUpdate={onCancelUpdate}
-                  postData={post.content}
-                />
-              }
-            />
-          </>
+          <Card.Meta
+            avatar={
+              <Link href={`/user/${post.User.id}`} prefetch={false}>
+                <a>
+                  <Avatar>{post.User.nickname[0]}</Avatar>
+                </a>
+              </Link>
+            }
+            title={post.User.nickname}
+            description={
+              <PostCardContent
+                editMode={editMode}
+                onChangePost={onChangePost}
+                onCancelUpdate={onCancelUpdate}
+                postData={post.content}
+              />
+            }
+          />
         )}
       </Card>
       {commentFormOpened && (

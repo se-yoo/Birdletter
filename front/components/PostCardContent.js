@@ -32,24 +32,25 @@ const PostCardContent = ({
   return (
     <>
       {editMode ? (
-        <>
+        <div style={{ textAlign: 'right' }}>
           <Input.TextArea
+            rows={3}
             value={editText}
             onChange={onChangeEditText}
             maxLength={140}
           />
-          <Button.Group>
+          <div style={{ marginTop: 10 }}>
             <Button
+              type="primary"
+              style={{ marginRight: 10 }}
               loading={updatePostLoading}
               onClick={onChangePost(editText)}
             >
               수정
             </Button>
-            <Button type="danger" onClick={onCancelUpdate}>
-              취소
-            </Button>
-          </Button.Group>
-        </>
+            <Button onClick={onCancelUpdate}>취소</Button>
+          </div>
+        </div>
       ) : (
         postData.split(/(#[^\s#]+)/g).map((v, i) => {
           if (v.match(/(#[^\s#]+)/)) {

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Card, List } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import Link from 'next/link';
+
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 
 const FollowList = ({ header, data, onClickMore, loading }) => {
@@ -41,7 +43,11 @@ const FollowList = ({ header, data, onClickMore, loading }) => {
           <Card
             actions={[<StopOutlined key="stop" onClick={onCancel(item.id)} />]}
           >
-            <Card.Meta description={item.nickname} />
+            <Link href={`/user/${item.id}`} prefetch={false}>
+              <a>
+                <Card.Meta description={item.nickname} />
+              </a>
+            </Link>
           </Card>
         </List.Item>
       )}
