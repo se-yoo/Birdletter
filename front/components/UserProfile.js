@@ -11,55 +11,45 @@ const UserProfile = () => {
 
   const onLogOut = useCallback(() => {
     dispatch(logoutRequestAction());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Card
       actions={[
-        <Link href={`/user/${me.id}`}>
-          <a>
-            <div key="twit">
-              짹짹
-              <br />
-              {me.Posts.length}
-            </div>
-          </a>
+        <Link href={`/user/${me.id}`} key="twit">
+          <div>
+            짹짹
+            <br />
+            {me.Posts.length}
+          </div>
         </Link>,
-        <Link href="/profile">
-          <a>
-            <div key="followings">
-              팔로잉
-              <br />
-              {me.Followings.length}
-            </div>
-          </a>
+        <Link href="/profile" key="followings">
+          <div>
+            팔로잉
+            <br />
+            {me.Followings.length}
+          </div>
         </Link>,
-        <Link href="/profile">
-          <a>
-            <div key="followers">
-              팔로워
-              <br />
-              {me.Followers.length}
-            </div>
-          </a>
+        <Link href="/profile" key="followers">
+          <div>
+            팔로워
+            <br />
+            {me.Followers.length}
+          </div>
         </Link>,
       ]}
     >
       <Card.Meta
         avatar={
           <Link href={`/user/${me.id}`} prefetch={false}>
-            <a>
-              <Avatar>{me.nickname[0]}</Avatar>
-            </a>
+            <Avatar>{me.nickname[0]}</Avatar>
           </Link>
         }
         title={me.nickname}
         description={
           <>
-            <Button style={{ marginRight: 10 }}>
-              <Link href="/profile">
-                <a>프로필</a>
-              </Link>
+            <Button style={{ marginRight: 10 }} href="/profile">
+              프로필
             </Button>
             <Button onClick={onLogOut} loading={logOutLoading}>
               로그아웃

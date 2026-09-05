@@ -1,29 +1,29 @@
-const withPlugins = require('next-compose-plugins');
-const withImages = require('next-images');
-
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const withAntdLess = require('next-plugin-antd-less')({
-  modifyVars: { '@primary-color': '#CD7DA0' },
-});
-
-module.exports = withPlugins([withBundleAnalyzer, withAntdLess, withImages], {
-  compress: true,
-  future: {
-    webpack5: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3065',
+        pathname: '/**',
+      },
+    ],
   },
   webpack(config, { webpack }) {
-    const prod = process.env.NODE_ENV === 'production';
-    return {
-      ...config,
-      mode: process.env.NODE_ENV,
-      devtool: prod ? 'hidden-source-map' : 'eval',
-      plugins: [
-        ...config.plugins,
-        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
-      ],
-    };
+    config.plugins.push(
+      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+    );
+    return config;
   },
-});
+};
+
+module.exports = withBundleAnalyzer(nextConfig);

@@ -117,6 +117,7 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <PostCardAction
+            key="retweet"
             type="retweet"
             active={retweeted}
             color="#2bbb00"
@@ -125,6 +126,7 @@ const PostCard = ({ post }) => {
             onInactive={onUnRetweet}
           />,
           <PostCardAction
+            key="heart"
             type="heart"
             active={liked}
             color="#eb2f96"
@@ -133,6 +135,7 @@ const PostCard = ({ post }) => {
             onInactive={onUnlike}
           />,
           <PostCardAction
+            key="comment"
             type="comment"
             color="#eb2f96"
             count={post.Comments.length}
@@ -182,9 +185,7 @@ const PostCard = ({ post }) => {
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`} prefetch={false}>
-                  <a>
-                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
-                  </a>
+                  <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
                 </Link>
               }
               title={post.Retweet.User.nickname}
@@ -195,9 +196,7 @@ const PostCard = ({ post }) => {
           <Card.Meta
             avatar={
               <Link href={`/user/${post.User.id}`} prefetch={false}>
-                <a>
-                  <Avatar>{post.User.nickname[0]}</Avatar>
-                </a>
+                <Avatar>{post.User.nickname[0]}</Avatar>
               </Link>
             }
             title={post.User.nickname}

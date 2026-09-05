@@ -10,7 +10,6 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          // CSS 서버 사이드 렌더링
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         });
@@ -26,6 +25,7 @@ export default class MyDocument extends Document {
       };
     } catch (err) {
       console.error(err);
+      return Document.getInitialProps(ctx);
     } finally {
       sheet.seal();
     }
@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="ko">
         <Head />
         <body>
           <Main />

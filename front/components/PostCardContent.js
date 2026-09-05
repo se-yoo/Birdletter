@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/dist/client/link';
+import Link from 'next/link';
 import { Button, Input } from 'antd';
 import { useSelector } from 'react-redux';
 
@@ -56,7 +56,7 @@ const PostCardContent = ({
           if (v.match(/(#[^\s#]+)/)) {
             return (
               <Link href={`/hashtag/${v.slice(1)}`} prefetch={false} key={i}>
-                <a>{v}</a>
+                {v}
               </Link>
             );
           }

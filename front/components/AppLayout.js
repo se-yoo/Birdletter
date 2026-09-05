@@ -9,7 +9,8 @@ import Router from 'next/router';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 import useInput from '../hooks/useInput';
-import logoImage from '../images/logo.png';
+
+const PRIMARY = '#CD7DA0';
 
 const AppMenu = styled(Menu)`
   position: sticky;
@@ -41,6 +42,24 @@ const Global = createGlobalStyle`
   textarea.ant-input {
     resize: none;
   }
+
+  .ant-btn-primary,
+  .ant-btn-primary:hover,
+  .ant-btn-primary:focus,
+  .ant-input-search-button,
+  .ant-input-search-button:hover {
+    background-color: ${PRIMARY} !important;
+    border-color: ${PRIMARY} !important;
+  }
+
+  a {
+    color: ${PRIMARY};
+  }
+
+  .ant-menu-horizontal > .ant-menu-item-selected a,
+  .ant-menu-horizontal > .ant-menu-item a:hover {
+    color: ${PRIMARY};
+  }
 `;
 
 const AppLayout = ({ children }) => {
@@ -56,12 +75,10 @@ const AppLayout = ({ children }) => {
     <div>
       <Global />
       <AppMenu mode="horizontal">
-        <Row gutter={20} justify="center" align="center">
+        <Row gutter={20} justify="center" align="middle">
           <Col sm={10} md={8} lg={6} xl={4} style={{ textAlign: 'center' }}>
             <Link href="/">
-              <a>
-                <img src={logoImage} alt="birdletter-logo" height="32px" />
-              </a>
+              <img src="/logo.png" alt="birdletter-logo" height={32} />
             </Link>
           </Col>
           <Col sm={12} lg={10} xl={8}>

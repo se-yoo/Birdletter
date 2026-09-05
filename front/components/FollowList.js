@@ -44,9 +44,7 @@ const FollowList = ({ header, data, onClickMore, loading }) => {
             actions={[<StopOutlined key="stop" onClick={onCancel(item.id)} />]}
           >
             <Link href={`/user/${item.id}`} prefetch={false}>
-              <a>
-                <Card.Meta description={item.nickname} />
-              </a>
+              <Card.Meta description={item.nickname} />
             </Link>
           </Card>
         </List.Item>
