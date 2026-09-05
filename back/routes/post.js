@@ -26,8 +26,13 @@ const upload = multer({
       const basename = path.basename(file.originalname, ext); // 이미지파일명
       done(null, basename + '_' + new Date().getTime() + ext);
     },
-    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   }),
+  limits: {
+    fileSize: 20 * 1024 * 1024, // 20MB
+    files: 10,
+    fields: 20,
+    fieldNestingDepth: 1,
+  },
 });
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
